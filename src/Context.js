@@ -12,10 +12,10 @@ class RoomProvider extends Component {
         FeaturedRooms:[],
         Loading:false,
         type:'all',
-        Capacity:1,
-        Price:0,
-        MinPrice:0,
-        MaxPrice:0,
+        capacity:1,
+        price:0,
+        minPrice:0,
+        maxPrice:0,
         MinSize:0,
         MaxSize:0,
         Breakfast:false,
@@ -27,14 +27,13 @@ class RoomProvider extends Component {
 componentDidMount(){
     let rooms=this.formatData(items);
     let FeaturedRooms=rooms.filter(room=>room.featured===true);
-    let MaxPrice = Math.max(...rooms.map(item=>item.price));
+    let maxPrice = Math.max(...rooms.map(item=>item.price));
     let MaxSize = Math.max(...rooms.map(item=>item.size));
 
-    console.log(MaxPrice);
     this.setState({
         rooms,FeaturedRooms,SortedRooms:rooms,loading:false,
-        Price:MaxPrice,
-        MaxPrice,
+        price:maxPrice,
+        maxPrice,
         MaxSize
     })
 }        
@@ -67,11 +66,25 @@ handleChange = event =>{
     )
 }
 fiterRooms = () =>{
-    let {rooms, type, Capacity, Price, MinSize, MaxSize, Breakfast,pets} = this.state;
+    let {rooms, type, capacity, price, MinSize, MaxSize, Breakfast,pets} = this.state;
     let TempRooms=[...rooms];
+    capacity = parseInt(capacity);
+    price= parseInt(price);
+    //filter by type
     if(type !== 'all'){
         TempRooms= TempRooms.filter(room=>room.type === type)
     }
+    //filter by capacity
+    if(capacity !== 1){
+        TempRooms = TempRooms.filter(room=>room.capacity>=capacity)
+    }
+    //filter by price range
+        TempRooms = TempRooms.filter(room=>room.price<=price)
+    
+
+
+
+
     this.setState({
         SortedRooms : TempRooms
     })
