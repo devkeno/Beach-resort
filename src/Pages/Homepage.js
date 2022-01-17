@@ -10,7 +10,7 @@ import StyledHeader from '../Components/StyledHero';
 export const Homepage = () => {
     return (       
         <>
-        <Hero>
+        <Hero >
          <Banner title="luxuries rooms" subtitle="deluxe rooms starting at $299" >
              <Link to="/rooms" className="btn-primary">Our Rooms</Link>
          </Banner>

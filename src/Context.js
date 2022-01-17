@@ -16,10 +16,10 @@ class RoomProvider extends Component {
         price:0,
         minPrice:0,
         maxPrice:0,
-        MinSize:0,
-        MaxSize:0,
-        Breakfast:false,
-        Pets:false
+        minSize:0,
+        maxSize:0,
+        breakfast:false,
+        pets:false
 
     };
     //getData
@@ -28,13 +28,13 @@ componentDidMount(){
     let rooms=this.formatData(items);
     let FeaturedRooms=rooms.filter(room=>room.featured===true);
     let maxPrice = Math.max(...rooms.map(item=>item.price));
-    let MaxSize = Math.max(...rooms.map(item=>item.size));
+    let maxSize = Math.max(...rooms.map(item=>item.size));
 
     this.setState({
         rooms,FeaturedRooms,SortedRooms:rooms,loading:false,
         price:maxPrice,
         maxPrice,
-        MaxSize
+        maxSize
     })
 }        
 
@@ -56,8 +56,8 @@ getRoom = (slug) =>{
 }
 handleChange = event =>{
     const target=event.target;
-    const name = event.target.name;
-    const value = event.type==='checkbox' ? target.checked : event.target.value;
+    const name = target.name;
+    const value = target.type==='checkbox' ? target.checked : event.target.value;
     this.setState(
         {
         [name] : value
@@ -66,7 +66,7 @@ handleChange = event =>{
     )
 }
 fiterRooms = () =>{
-    let {rooms, type, capacity, price, MinSize, MaxSize, Breakfast,pets} = this.state;
+    let {rooms, type, capacity, price, minSize, maxSize, breakfast,pets} = this.state;
     let TempRooms=[...rooms];
     capacity = parseInt(capacity);
     price= parseInt(price);
@@ -81,9 +81,14 @@ fiterRooms = () =>{
     //filter by price range
         TempRooms = TempRooms.filter(room=>room.price<=price)
     
-
-
-
+        TempRooms = TempRooms.filter(room=> room.size>minSize && room.size<maxSize)
+   
+        if(breakfast){
+        TempRooms = TempRooms.filter(room=>room.breakfast===true)
+        }
+        if(pets){
+            TempRooms = TempRooms.filter(room=>room.pets===true)
+            }
 
     this.setState({
         SortedRooms : TempRooms
